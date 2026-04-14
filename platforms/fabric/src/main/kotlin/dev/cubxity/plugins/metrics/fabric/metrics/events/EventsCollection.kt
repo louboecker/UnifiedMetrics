@@ -24,6 +24,8 @@ import dev.cubxity.plugins.metrics.api.metric.store.VolatileDoubleStore
 import dev.cubxity.plugins.metrics.common.metric.Metrics
 import dev.cubxity.plugins.metrics.fabric.events.ChatEvent
 import dev.cubxity.plugins.metrics.fabric.events.PingEvent
+import net.fabricmc.fabric.api.event.player.AttackBlockCallback
+import net.fabricmc.fabric.api.message.v1.ServerMessageEvents
 import net.fabricmc.fabric.api.networking.v1.ServerLoginConnectionEvents
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents
 
@@ -38,6 +40,9 @@ class EventsCollection : CollectorCollection {
         listOf(loginCounter, joinCounter, quitCounter, chatCounter, pingCounter)
 
     override fun initialize() {
+        ServerMessageEvents.CHAT_MESSAGE.register {  _, _ , _ ->
+            chatCounter.inc()
+        }
         ServerLoginConnectionEvents.INIT.register { _, _ ->
             loginCounter.inc()
         }
@@ -46,9 +51,6 @@ class EventsCollection : CollectorCollection {
         }
         ServerPlayConnectionEvents.DISCONNECT.register { _, _ ->
             quitCounter.inc()
-        }
-        ChatEvent.event.register {
-            chatCounter.inc()
         }
         PingEvent.event.register {
             pingCounter.inc()

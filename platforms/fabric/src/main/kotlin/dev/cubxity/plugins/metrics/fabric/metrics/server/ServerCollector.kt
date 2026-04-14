@@ -29,8 +29,8 @@ class ServerCollector(private val bootstrap: UnifiedMetricsFabricBootstrap): Col
         val server = bootstrap.server
         return listOf(
             GaugeMetric(Metrics.Server.Plugins, value = FabricLoader.getInstance().allMods.size),
-            GaugeMetric(Metrics.Server.PlayersCount, value = server.currentPlayerCount),
-            GaugeMetric(Metrics.Server.PlayersMax, value = server.maxPlayerCount)
+            GaugeMetric(Metrics.Server.PlayersCount, value = server.playerCount),
+            GaugeMetric(Metrics.Server.PlayersMax, value = server.maxPlayers)
         )
     }
 }

@@ -18,16 +18,16 @@
 package dev.cubxity.plugins.metrics.fabric.mixins;
 
 import dev.cubxity.plugins.metrics.fabric.events.PingEvent;
-import net.minecraft.server.network.ServerQueryNetworkHandler;
+import net.minecraft.server.network.ServerStatusPacketListenerImpl;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ServerQueryNetworkHandler.class)
+@Mixin(ServerStatusPacketListenerImpl.class)
 public class ServerQueryNetworkHandlerMixin {
 
-    @Inject(method = "onRequest", at = @At("HEAD"))
+    @Inject(method = "handlePingRequest", at = @At("HEAD"))
     private void handleOnRequest(CallbackInfo ci) {
         PingEvent.Companion.getEvent().invoker().onPing();
     }

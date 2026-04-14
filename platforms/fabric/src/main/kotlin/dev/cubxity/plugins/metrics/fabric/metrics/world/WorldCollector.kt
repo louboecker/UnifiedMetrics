@@ -22,17 +22,19 @@ import dev.cubxity.plugins.metrics.api.metric.data.GaugeMetric
 import dev.cubxity.plugins.metrics.api.metric.data.Metric
 import dev.cubxity.plugins.metrics.common.metric.Metrics
 import dev.cubxity.plugins.metrics.fabric.bootstrap.UnifiedMetricsFabricBootstrap
+import net.minecraft.resources.ResourceKey
+import net.minecraft.world.level.Level
 
 class WorldCollector(private val bootstrap: UnifiedMetricsFabricBootstrap) : Collector {
     override fun collect(): List<Metric> {
-        val worlds = bootstrap.server.worlds
+        val worlds = bootstrap.server.allLevels
         val samples = ArrayList<Metric>(worlds.count() * 3)
 
         worlds.forEach { world ->
-            val tags = mapOf("world" to world.registryKey.value.toString())
-            samples.add(GaugeMetric(Metrics.Server.WorldEntitiesCount, tags, world.iterateEntities().count()))
-            samples.add(GaugeMetric(Metrics.Server.WorldPlayersCount, tags, world.players.size))
-            samples.add(GaugeMetric(Metrics.Server.WorldLoadedChunks, tags, world.chunkManager.loadedChunkCount))
+            val tags = mapOf("world" to world.dimension().identifier().toString())
+            samples.add(GaugeMetric(Metrics.Server.WorldEntitiesCount, tags, world.allEntities.count()))
+            samples.add(GaugeMetric(Metrics.Server.WorldPlayersCount, tags, world.players().size))
+            samples.add(GaugeMetric(Metrics.Server.WorldLoadedChunks, tags, world.chunkSource.loadedChunksCount))
         }
 
         return samples

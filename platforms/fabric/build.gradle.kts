@@ -18,7 +18,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
  */
 
 plugins {
-    id("fabric-loom")
+    id("net.fabricmc.fabric-loom")
 }
 
 val transitiveInclude: Configuration by configurations.creating {
@@ -29,12 +29,11 @@ val transitiveInclude: Configuration by configurations.creating {
 
 dependencies {
     // https://fabricmc.net/versions.html
-    minecraft("com.mojang:minecraft:1.17.1")
-    mappings("net.fabricmc:yarn:1.17.1+build.65:v2")
-    modImplementation("net.fabricmc:fabric-loader:0.16.13")
+    minecraft("com.mojang:minecraft:26.1.2")
+    implementation("net.fabricmc:fabric-loader:0.19.1")
 
-    modImplementation("net.fabricmc.fabric-api:fabric-api:0.46.1+1.17")
-    modImplementation("net.fabricmc:fabric-language-kotlin:1.13.2+kotlin.2.1.20")
+    implementation("net.fabricmc.fabric-api:fabric-api:0.145.4+26.1.2")
+    implementation("net.fabricmc:fabric-language-kotlin:1.13.10+kotlin.2.3.20")
 
     api(project(":unifiedmetrics-core"))
 
